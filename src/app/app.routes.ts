@@ -7,6 +7,7 @@ import { Register } from './register/register';
 import { Admin } from './admin/admin';
 import { Dashboard2 } from './dashboard2/dashboard2';
 import { Dashboard3 } from './dashboard3/dashboard3';
+import { Contact } from './contact/contact';
 
 export const routes: Routes = [
         { path: '',  redirectTo: 'login', pathMatch: 'full'},
@@ -16,5 +17,6 @@ export const routes: Routes = [
         { path: "admin", component: Admin },
         { path: "dashboard2", component: Dashboard2 },
         { path: "dashboard3", component: Dashboard3 },
+        { path: "contact", component: Contact },
 
 ];
