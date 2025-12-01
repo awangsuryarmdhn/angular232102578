@@ -1,4 +1,4 @@
-import { Component, Renderer2 } from '@angular/core';
+import { Component, Renderer2, OnDestroy } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
@@ -12,7 +12,8 @@ declare const $: any;
   templateUrl: './login.html',
   styleUrl: './login.css'
 })
-export class LoginComponent {
+
+export class Login implements OnDestroy {
   constructor(private renderer: Renderer2, private httpClient: HttpClient,
     private router: Router, private cookieService: CookieService
   ) {
@@ -27,6 +28,11 @@ export class LoginComponent {
   showPeringatanModal(message: string): void {
     $("#peringatanModal").modal();
     $("#pm_message").html(message);
+  }
+
+  ngOnDestroy(): void {
+    this.renderer.removeClass(document.body, "Login-page");
+    this.renderer.removeAttribute(document.body, "style");
   }
 
   signIn(): void {
