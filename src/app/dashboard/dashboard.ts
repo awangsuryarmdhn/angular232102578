@@ -20,5 +20,12 @@ export class Dashboard implements AfterViewInit, OnInit {
     // Tambahkan class standar AdminLTE untuk dashboard
     this.renderer.addClass(document.body, 'sidebar-mini');
     this.renderer.addClass(document.body, 'layout-fixed');
+    
+  }
+
+  ngAfterViewInit(): void {
+    this.renderer.removeClass(document.body, "sidebar-open");
+    this.renderer.addClass(document.body, "sidebar-closed");
+    this.renderer.addClass(document.body, "sidebar-collapse");
   }
 }

@@ -12,8 +12,8 @@ import { Footer } from "../footer/footer";
 })
 export class Dashboard3 implements AfterViewInit{
   
-   constructor( private renderer: Renderer2) {}
-    ngAfterViewInitgAfterViewInit(): void {
+    constructor(private renderer: Renderer2) {}
+    ngAfterViewInit(): void {
   
     this.renderer.removeClass(document.body, "sidebar-open");
     this.renderer.addClass(document.body, "sidebar-closed");
