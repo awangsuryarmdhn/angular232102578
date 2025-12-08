@@ -69,6 +69,12 @@
                   <p>Mahasiswa</p>
                 </a>
               </li>
+        <li class="nav-item">
+                <a [routerLink]="['/forex']" routerLinkActive="router-link-active" class="nav-link {{ moduleName == 'forex' ? 'active' : ''}}">
+                  <i class=" nav-icon fas fa-money-bill-alt"></i>
+                  <p>Forex</p>
+                </a>
+              </li>
          <!-- <li class="nav-item">
                 <a href="/mahasiswa" class="nav-link">
                   <i class=" nav-icon fas fa-graduation-cap"></i>
@@ -666,6 +672,12 @@
             <a href="#" class="nav-link">
               <i class="nav-icon far fa-circle text-info"></i>
               <p>Informational</p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="" class="nav-link" (click)="toggleTheme(); $event.preventDefault()">
+              <i class="nav-icon fas fa-adjust"></i>
+              <p>Light/Dark Mode</p>
             </a>
           </li>
           <li class="nav-item">

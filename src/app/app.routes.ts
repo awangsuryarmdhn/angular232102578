@@ -12,6 +12,8 @@ import { Mahasiswa } from './mahasiswa/mahasiswa';
 import { otentikasiGuard } from './otentikasi-guard';
 import { NgModule } from '@angular/core';
 import { Contact } from './contact/contact';
+import { Forex } from './forex/forex';
+
 
 export const routes: Routes = [
         { path: '',  redirectTo: 'login', pathMatch: 'full'},
@@ -24,6 +26,7 @@ export const routes: Routes = [
         { path: "mahasiswa", component: Mahasiswa, canActivate: [otentikasiGuard] },
         { path: "contact", component: Contact },
         { path: "logout", component: Logout },
+        { path: "forex", component: Forex, canActivate: [otentikasiGuard] }
 
 
 ];
