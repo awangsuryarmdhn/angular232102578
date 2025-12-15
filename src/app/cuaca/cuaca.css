@@ -1,0 +1,7 @@
+#map-container {
+  height: 400px; /* Atur tinggi peta, misal 400px */
+  width: 100%;   /* Lebar penuh */
+  background-color: #eee; /* Warna abu-abu sementara untuk memastikan div ada */
+  margin-top: 20px;
+  z-index: 1;
+}
