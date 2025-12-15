@@ -13,7 +13,7 @@ import { otentikasiGuard } from './otentikasi-guard';
 import { NgModule } from '@angular/core';
 import { Contact } from './contact/contact';
 import { Forex } from './forex/forex';
-
+import { Cuaca } from './cuaca/cuaca';
 
 export const routes: Routes = [
         { path: '',  redirectTo: 'login', pathMatch: 'full'},
@@ -21,6 +21,7 @@ export const routes: Routes = [
         { path: "login", component: Login },
         { path: "register", component: Register },
         { path: "admin", component: Admin },
+        { path: "cuaca", component: Cuaca, canActivate: [otentikasiGuard] },
         { path: "dashboard2", component: Dashboard2, canActivate: [otentikasiGuard] },
         { path: "dashboard3", component: Dashboard3, canActivate: [otentikasiGuard] },
         { path: "mahasiswa", component: Mahasiswa, canActivate: [otentikasiGuard] },
