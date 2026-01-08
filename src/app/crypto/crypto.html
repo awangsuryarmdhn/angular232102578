@@ -2,11 +2,13 @@
 <app-sidebar></app-sidebar>
 
 <div class="content-wrapper">
+  
   <section class="content-header">
     <div class="container-fluid">
-      <div class="row mb-2">
+      <div class="row mb-3 mt-2">
         <div class="col-sm-6">
-          <h1>Crypto Price Tracker ( Sumber CoinPaprika)</h1>
+          <h1 class="m-0 text-dark font-weight-bold">Pasar Crypto Realtime</h1>
+          <p class="text-muted small">Data harga aset crypto terbaru dalam Rupiah (IDR)</p>
         </div>
       </div>
     </div>
@@ -14,72 +16,86 @@
 
   <section class="content">
     <div class="container-fluid">
-      <div class="card card-purple card-outline">
-        <div class="card-header">
-          <h3 class="card-title">Harga Realtime</h3>
-          <div class="card-tools">
-            <button class="btn btn-tool" (click)="getTop10CoinPaprika()">
-              <i class="fas fa-sync"></i> Refresh
-            </button>
-          </div>
+
+      <div class="card shadow-sm border-0">
+        
+        <div class="card-header bg-white border-0 d-flex justify-content-between align-items-center py-3">
+          <h3 class="card-title font-weight-bold text-primary">
+            <i class="fas fa-chart-line mr-2"></i> Top Aset (Market Cap)
+          </h3>
+          <button class="btn btn-sm btn-outline-secondary" (click)="fetchData()" [disabled]="isLoading">
+            <i class="fas fa-sync-alt" [class.fa-spin]="isLoading"></i> Refresh
+          </button>
         </div>
         
         <div class="card-body p-0">
-          <div *ngIf="isLoading" class="p-3 text-center text-muted">
-            <i class="fas fa-spinner fa-spin"></i> Sedang mengambil data...
+          
+          <div class="table-responsive">
+            <table id="tableCrypto" class="table table-striped table-hover w-100 valign-middle">
+              <thead class="bg-light">
+                <tr>
+                  <th class="text-center" style="width: 50px">Rank</th>
+                  <th>Nama Aset</th>
+                  <th class="text-right">Harga (IDR)</th>
+                  <th class="text-center">24h %</th>
+                  <th class="text-center">Aksi</th>
+                </tr>
+              </thead>
+              
+              <tbody *ngIf="!isLoading">
+                <tr *ngFor="let coin of dataCrypto">
+                  
+                  <td class="text-center font-weight-bold text-muted">{{ coin.rank }}</td>
+                  
+                  <td>
+                    <div class="d-flex align-items-center">
+                      <img [src]="'https://static.coinpaprika.com/coin/' + coin.id + '/logo.png'" 
+                           style="width: 32px; height: 32px; border-radius: 50%;" 
+                           class="mr-3 border shadow-sm"
+                           onerror="this.style.display='none'">
+                      
+                      <div style="line-height: 1.2;">
+                        <span class="font-weight-bold text-dark d-block">{{ coin.name }}</span>
+                        <small class="text-muted text-uppercase font-weight-bold" style="font-size: 0.8rem;">{{ coin.symbol }}</small>
+                      </div>
+                    </div>
+                  </td>
+                  
+                  <td class="text-right font-weight-bold" style="font-size: 1rem;">
+                    {{ formatUang(coin.quotes.IDR.price) }}
+                  </td>
+
+                  <td class="text-center font-weight-bold" [ngClass]="getColorClass(coin.quotes.IDR.percent_change_24h)">
+                    <i class="fas mr-1" 
+                       [class.fa-caret-up]="coin.quotes.IDR.percent_change_24h >= 0"
+                       [class.fa-caret-down]="coin.quotes.IDR.percent_change_24h < 0">
+                    </i>
+                    {{ coin.quotes.IDR.percent_change_24h }}%
+                  </td>
+
+                  <td class="text-center">
+                    <a [href]="'https://www.tokocrypto.com/id/trade/' + coin.symbol + '_USDT'" 
+                       target="_blank" 
+                       class="btn btn-xs btn-primary rounded-pill px-3 shadow-sm">
+                       Trade
+                    </a>
+                  </td>
+
+                </tr>
+              </tbody>
+            </table>
           </div>
 
-          <table id="table1" class="table table-striped table-hover" [style.display]="isLoading ? 'none' : 'table'">
-            <thead>
-              <tr>
-                <th style="width: 10px">Rank</th>
-                <th>Nama Aset</th>
-                <th class="text-right">Harga (IDR)</th>
-                <th class="text-center">24h %</th>
-                <th class="text-center">Trade</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let coin of dataCrypto">
-                
-                <td>{{ coin.rank }}</td>
-                
-                <td>
-                  <div style="display: flex; align-items: center;">
-                    <img [src]="'https://static.coinpaprika.com/coin/' + coin.id + '/logo.png'" 
-                         style="width: 25px; height: 25px; margin-right: 10px; border-radius: 50%;"
-                         onerror="this.style.display='none'"> 
-                    <div>
-                      <strong>{{ coin.name }}</strong><br>
-                      <small class="text-muted">{{ coin.symbol }}</small>
-                    </div>
-                  </div>
-                </td>
-                
-                <td class="text-right font-weight-bold">
-                  {{ formatRupiah(coin.quotes.IDR.price) }}
-                </td>
+          <div *ngIf="isLoading" class="text-center py-5">
+            <div class="spinner-border text-primary" role="status"></div>
+            <p class="mt-2 text-muted">Mengambil data pasar...</p>
+          </div>
 
-                <td class="text-center">
-                  <span [class]="getColorClass(coin.quotes.IDR.percent_change_24h)">
-                    {{ coin.quotes.IDR.percent_change_24h }}%
-                  </span>
-                </td>
-
-                <td class="text-center">
-                  <a [href]="'https://www.tokocrypto.com/id/trade/' + coin.symbol + '_USDT'" 
-                    target="_blank" 
-                    class="text-decoration-none font-weight-bold">
-                    BUY/SELL
-                  </a>
-                </td>
-                
-              </tr>
-            </tbody>
-          </table>
         </div>
       </div>
+
     </div>
   </section>
 </div>
+
 <app-footer></app-footer>
