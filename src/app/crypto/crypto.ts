@@ -112,4 +112,6 @@ formatRupiah(angka: number): string {
     if (change < 0) return 'badge badge-danger';
     return 'badge badge-secondary';
   }
+
 }
+
