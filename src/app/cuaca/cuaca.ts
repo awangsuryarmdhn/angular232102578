@@ -73,7 +73,7 @@ export class Cuaca implements AfterViewInit {
   getData(city: string): void {
     city = encodeURIComponent(city);
     this.http
-      .get(`http://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=9253cf14f9239acd1037a885af0b0cc1`)
+      .get(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=9253cf14f9239acd1037a885af0b0cc1`)
       .subscribe((data: any) => {
         
         // Simpan data untuk ditampilkan di widget atas (HTML)
