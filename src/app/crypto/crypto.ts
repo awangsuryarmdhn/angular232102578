@@ -120,4 +120,6 @@ export class Crypto implements OnInit, AfterViewInit {
       }
     });
   }
+
 }
+
