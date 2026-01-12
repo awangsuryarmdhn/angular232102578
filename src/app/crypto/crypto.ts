@@ -39,47 +39,41 @@ interface Coin {
 })
 export class Crypto implements OnInit, AfterViewInit {
   
-  // State Data
-  dataCrypto: Coin[] = []; // Menggunakan tipe data Coin (bukan any)
+
+  dataCrypto: Coin[] = []; 
   isLoading: boolean = true;
 
   constructor(
     private http: HttpClient, 
-    private renderer: Renderer2 // Wajib inject ini untuk manipulasi DOM/Sidebar
+    private renderer: Renderer2 
   ) {}
 
-  // 1. Lifecycle: Dipanggil saat komponen logic dimulai
+
   ngOnInit(): void {
     this.fetchData();
   }
 
-  // 2. Lifecycle: Dipanggil setelah tampilan HTML selesai dimuat
   ngAfterViewInit(): void {
-    // --- SIDEBAR LOGIC (Sesuai Permintaan) ---
-    // Memaksa sidebar tertutup saat halaman ini dibuka
+
     this.renderer.removeClass(document.body, "sidebar-open");
     this.renderer.addClass(document.body, "sidebar-closed");
     this.renderer.addClass(document.body, "sidebar-collapsed");
   }
 
-  // --- LOGIC: FETCH DATA ---
   fetchData(): void {
     const apiUrl = "https://api.coinpaprika.com/v1/tickers?quotes=IDR";
 
     this.http.get<Coin[]>(apiUrl).subscribe({
       next: (data) => {
-        // Ambil 2000 data
+
         let cleanData = data.slice(0, 2000);
 
-        // Sorting: Market Cap Terbesar -> Terkecil
         cleanData.sort((a, b) => b.quotes.IDR.market_cap - a.quotes.IDR.market_cap);
 
         this.dataCrypto = cleanData;
         this.isLoading = false;
         
-        // Init DataTables
-        // Kita beri jeda sedikit agar Angular selesai merender baris <tr>
-        // 500ms sudah cukup aman (2000ms terlalu lama menunggu)
+
         setTimeout(() => this.initTable(), 500);
       },
       error: (err) => {
@@ -90,11 +84,11 @@ export class Crypto implements OnInit, AfterViewInit {
     });
   }
 
-  // --- LOGIC: FORMATTING & UI HELPER ---
+
 
   formatUang(nilai: number): string {
     if (!nilai) return 'Rp 0';
-    // Logic desimal pintar: Koin micin desimal panjang, koin mahal desimal pendek
+
     const digit = nilai < 1000 ? '1.2-8' : '1.0-2';
     return formatCurrency(nilai, 'id-ID', 'Rp ', 'IDR', digit);
   }
@@ -103,11 +97,10 @@ export class Crypto implements OnInit, AfterViewInit {
     return value >= 0 ? 'text-success' : 'text-danger';
   }
 
-  // --- LOGIC: DATATABLES ---
   initTable(): void {
     if (typeof $ === 'undefined' || !$.fn.DataTable) return;
 
-    // Hancurkan instance lama untuk mencegah error/duplikasi
+  
     if ($.fn.DataTable.isDataTable('#tableCrypto')) {
       $('#tableCrypto').DataTable().destroy();
     }
