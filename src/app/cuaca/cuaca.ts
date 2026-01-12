@@ -22,7 +22,7 @@ export class Cuaca implements AfterViewInit {
   private table1: any;
   private map: any;
   
-  // Variabel publik agar bisa diakses oleh HTML
+
   public cityData: any;
   public currentWeather: any;
   public todayDate: any;
@@ -76,19 +76,18 @@ export class Cuaca implements AfterViewInit {
       .get(`https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=9253cf14f9239acd1037a885af0b0cc1`)
       .subscribe((data: any) => {
         
-        // Simpan data untuk ditampilkan di widget atas (HTML)
+
         this.cityData = data.city;
         
         if (data.list.length > 0) {
             this.currentWeather = data.list[0];
-            // Update suhu langsung di object agar HTML bisa langsung pakai angka Celcius
             this.currentWeather.main.temp_celcius = this.kelvinToCelcius(this.currentWeather.main.temp);
             this.currentWeather.main.temp_min_celcius = this.kelvinToCelcius(this.currentWeather.main.temp_min);
             this.currentWeather.main.temp_max_celcius = this.kelvinToCelcius(this.currentWeather.main.temp_max);
             
             this.todayDate = moment(this.currentWeather.dt_txt + ' UTC').local().format('MMM DD, hh:mma');
 
-            // Inisialisasi Peta
+
             setTimeout(() => {
                 if (this.cityData && this.cityData.coord) {
                     this.initMap(this.cityData.coord.lat, this.cityData.coord.lon);
@@ -96,7 +95,6 @@ export class Cuaca implements AfterViewInit {
             }, 100);
         }
 
-        // Proses Data Table
         let list = data.list;
         this.table1.clear();
 
@@ -122,7 +120,6 @@ export class Cuaca implements AfterViewInit {
       });
   }
 
-  // --- FUNGSI PETA ---
   private initMap(lat: number, lon: number): void {
     if (this.map) {
       this.map.remove();
@@ -134,23 +131,19 @@ export class Cuaca implements AfterViewInit {
     L.marker([lat, lon]).addTo(this.map).bindPopup(this.cityData.name).openPopup();
   }
 
-  // --- FUNGSI HELPER (Untuk memperbaiki Error HTML) ---
-  
-  // 3. Fungsi konversi Kelvin ke Celcius
+
   kelvinToCelcius(kelvin: any): number {
     let celcius = kelvin - 273.15;
     return Math.round(celcius * 100) / 100;
   }
 
-  // 4. Fungsi mendapatkan Icon (Memperbaiki error 'getWeatherIconUrl')
   getWeatherIconUrl(iconCode: string): string {
     return `https://openweathermap.org/img/wn/${iconCode}@2x.png`;
   }
 
-  // 5. Fungsi arah angin (Memperbaiki error 'getWindDirection')
+  
   getWindDirection(deg: number): string {
     const directions = ['Utara', 'Timur Laut', 'Timur', 'Tenggara', 'Selatan', 'Barat Daya', 'Barat', 'Barat Laut'];
-    // Logika sederhana membagi 360 derajat menjadi 8 arah
     const index = Math.round(deg / 45) % 8; 
     return directions[index];
   }
