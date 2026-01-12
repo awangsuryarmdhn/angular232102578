@@ -13,7 +13,6 @@ declare const L: any;
 @Component({
   selector: "app-cuaca",
   standalone: true,
-  // 2. Tambahkan CommonModule di sini untuk memperbaiki error *ngIf dan | number
   imports: [CommonModule, Header, Sidebar, Footer, RouterModule], 
   templateUrl: './cuaca.html',
   styleUrl: './cuaca.css',
@@ -56,9 +55,13 @@ export class Cuaca implements AfterViewInit {
             const description = array[1];
             return "<strong>" + cuaca + "</strong> <br />" + description;
           },
+          
         },
+
+        
       ],
     });
+    this.getData('Pontianak');
   }
 
   handleEnter(event: any) {
